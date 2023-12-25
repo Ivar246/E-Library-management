@@ -13,11 +13,11 @@ export class Borrow {
 
     @ManyToOne(() => Book, book => book.borrows)
     @JoinColumn({ name: "book_id" })
-    books: Book[]
+    book: Book
 
     @ManyToOne(() => User)
     @JoinColumn({ name: "user_id" })
-    users: User[]
+    user: User
 
     @CreateDateColumn({ name: "borrow_date" })
     borrow_date: Date
