@@ -14,7 +14,8 @@ export class User {
 
     @Column({
         type: "varchar",
-        length: 20
+        length: 20,
+        nullable: true
     })
     username: string
 
@@ -44,7 +45,7 @@ export class User {
     })
     role: Role;
 
-    @OneToMany(() => Borrow, borrow => borrow.users)
+    @OneToMany(() => Borrow, borrow => borrow.user)
     borrows: Borrow[]
 
     @OneToMany(() => Rating, rating => rating.user, {
