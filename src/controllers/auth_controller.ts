@@ -10,7 +10,7 @@ import { Role } from "../db/config";
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
     // check if user already exist
-    const { username, age, phone, email, password } = req.body;
+    const { username, firstName, lastName, age, phone, email, password } = req.body;
 
     try {
 
@@ -32,7 +32,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
         user.password = hashedPassword;
         user.role = Role.USER
         const profile = new Profile();
-
+        profile.firstName = firstName;
+        profile.lastName = lastName;
         user.profile = profile;
 
         await AppDataSource.manager.save(user);
