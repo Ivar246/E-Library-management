@@ -3,16 +3,11 @@ import { register, login } from "../controllers/auth_controller";
 const router = express.Router()
 
 
-
-// get register
-
 //post register
-router.post("/api/register", register)
-
-//get login
+router.post("/register", register)
 
 // post login
-router.post("/api/login", login)
+router.post("/login", login)
 
 // reset
 

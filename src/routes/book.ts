@@ -1,26 +1,33 @@
 import express from "express";
+import { getBooks, getBook, createBook, deleteBook, updateBook } from "../controllers/book_controller"
+import { isAuth } from "../middleware/isAuth";
+import { checkUserRole } from "../middleware/checkUserRole";
+import { isLibrarian } from "../middleware/isLibrarian";
+import { getBorrowedBooks } from "../controllers/book_controller";
 
-const router = express.Router()
+const router = express.Router();
 
 // get all book
-//router.get("/api/books", getBooks)
+router.get("/books", getBooks);
 
 // get one book
-//router.get("/api/:bookId", getBook)
+router.get("/:bookId", getBook);
 
 // create book
-// router.post("/api/create_book", isAuth, checkUserRole,createBook)
+router.post("/create_book", createBook);
 
 // update book
-// router.put("/api/:bookId", updateBook)
+router.put("/:bookId", updateBook);
 
 // deletebook
-// router.delete("/api/:bookId", deleteBook)
+router.delete("/:bookId", deleteBook);
 
-// sort book
-//router.get("/api/books", sortBook)
+// get all borrow
+router.get("/borrowed_books", getBorrowedBooks);
 
 // search book
+
+
 
 
 export default router;
