@@ -10,7 +10,7 @@ export class Review {
     @Column("text", {
         name: 'review'
     })
-    review: string
+    text: string
 
     @ManyToOne(() => User)
     @JoinColumn({ name: "user_id" })
