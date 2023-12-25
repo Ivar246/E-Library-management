@@ -1,10 +1,9 @@
-import internal from "stream";
-import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany, ManyToMany, JoinTable } from "typeorm";
 import { Borrow } from "./Borrow";
 import { Rating } from "./Rating";
 import { Review } from "./Review";
-
-@Entity()
+import { Genre } from "./Genre";
+@Entity("books")
 export class Book {
     @PrimaryGeneratedColumn()
     id: number
@@ -15,13 +14,17 @@ export class Book {
     @Column()
     author: string
 
-    @Column()
-    genre: string
+    @Column({ type: "int", default: 0 })
+    total_quantity: number
 
-    @Column({ type: "int" })
-    quantity: number
+    @Column({ type: "int", default: 0 })
+    available_quantity: number
 
-    @OneToMany(() => Borrow, borrow => borrow.books)
+    @ManyToMany(() => Genre, genre => genre.books)
+    @JoinTable({ name: "book_genre" })
+    genres: Genre[]
+
+    @OneToMany(() => Borrow, borrow => borrow.book)
     borrows: Borrow[]
 
     @OneToMany(() => Rating, rating => rating.book)
