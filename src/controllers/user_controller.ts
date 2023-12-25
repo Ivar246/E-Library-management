@@ -8,7 +8,7 @@ import { Role } from "../db/config";
 //get users
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
     const users = await AppDataSource.manager.find(User);
-    console.log(users);
+
     return res.status(200).json({ status: "success", users: users });
 }
 
@@ -16,8 +16,11 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
 export const getUser = async (req: Request, res: Response, next: NextFunction) => {
     const userId = parseInt(req.params.userId);
     const user = await AppDataSource.manager.findOneBy(User, { id: userId });
-    console.log(user);
-    return res.status(200).json({ status: "success", user: user });
+
+    const userCopy = { ...user };
+    delete userCopy.password;
+
+    return res.status(200).json({ status: "success", user: userCopy });
 }
 
 // create_user
@@ -60,13 +63,25 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 // update User
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     const userId = parseInt(req.params.userId);
-    const updatedInfo = req.body;
+    const { username, email, phone, age } = req.body;
 
     try {
-        const updatedUser = await AppDataSource.manager.update(User, { id: userId }, updatedInfo);
+        const user = await AppDataSource.getRepository(User).findOne({ where: { id: userId } }) as User;
+        console.log(user)
+        if (!user) return res.status(404).json({ status: "failed", message: "user not found" });
+
+        user.username = username;
+        user.email = email;
+        user.age = age;
+        user.phone = phone;
+
+        console.log(user)
+
+        await AppDataSource.manager.save(user);
         return res.json({ status: "success", message: "User updated successfully.", user: updateUser })
     } catch (error) {
-        return res.status(500).json({ status: "failed", message: "User couldn't be updated." })
+        console.log(error)
+        return res.status(500).json({ status: "failed", message: "User couldn't be updated.", error: error })
     }
 }
 
@@ -74,8 +89,8 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     const userId = parseInt(req.params.userId);
     try {
-        const deletedUser = await AppDataSource.manager.delete(User, userId)
-        return res.status(200).json({ status: "success", message: "user deleted successfully", user: deletedUser })
+        await AppDataSource.manager.delete(User, userId)
+        return res.status(200).json({ status: "success", message: "user deleted successfully" })
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "couldn't delete user.", status: "failed" })
