@@ -1,7 +1,6 @@
 import { Profile } from "../entity/Profile";
 import { Request, Response, NextFunction } from "express";
 import { AppDataSource } from "../data-source";
-import { profile } from "console";
 import { User } from "../entity/User";
 
 export const insertData = async (req: Request, res: Response, next: NextFunction) => {
