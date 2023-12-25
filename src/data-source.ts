@@ -7,6 +7,7 @@ import { Profile } from "./entity/Profile"
 import { Rating } from "./entity/Rating"
 import { Review } from "./entity/Review"
 import { Renew } from "./entity/Renew"
+import { Genre } from "./entity/Genre"
 
 console.log(process.env.DB_USER)
 export const AppDataSource = new DataSource({
@@ -18,5 +19,5 @@ export const AppDataSource = new DataSource({
     database: "Library Management System",
     synchronize: true,
     logging: false,
-    entities: [User, Profile, Book, Borrow, Renew, Rating, Review],
+    entities: [User, Profile, Book, Borrow, Renew, Rating, Review, Genre],
 })
